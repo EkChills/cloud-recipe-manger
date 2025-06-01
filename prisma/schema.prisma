@@ -1,0 +1,130 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Optional, for direct access without Prisma Client
+}
+ 
+generator client {
+  provider = "prisma-client-js"
+}
+ 
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+  Recipes Recipe[]
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([userId, credentialID])
+}
+
+
+model Recipe {
+  id             String             @id @default(cuid())
+  title          String
+  description    String?
+  image          String?
+  categoryId     String?
+  category       String? // e.g. "Cake", "Candy", "Bread"
+  ingredients    RecipeIngredient[]
+  steps          Step[]
+  authorId       String
+  author         User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+// model RecipeCategory {
+//   id       String   @id @default(cuid())
+//   name     String   @unique // e.g. "Cake", "Candy", "Bread"
+//   recipeId String
+//   recipe   Recipe?  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+// }
+
+model Step {
+  id        String   @id @default(cuid())
+  recipeId  String
+  content   String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model MasterIngredient {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  measureType  String   // e.g. "grams", "cups", "tbsp"
+  pricePerUnit Float    // e.g. ₦100 per gram
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model RecipeIngredient {
+  id              String   @id @default(cuid())
+  recipeId        String
+  name            String   // e.g. "Flour" (free input if no master)
+  quantity        Float    // e.g. 2.5
+  measureType     String   // e.g. "cups"
+  calculatedPrice Float?   // nullable — filled if MasterIngredient exists
+  price Float?
+  recipe          Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
