@@ -11,6 +11,7 @@ import {
 import { BookOpen, ChefHat, LogOut, Settings, User } from "lucide-react"
 import Link from "next/link"
 import MobileNavMenu from "./mobile-nav-menu"
+import { ThemeToggle } from "./theme-toggle"
 import { auth, signIn, signOut } from "@/auth"
 
 
@@ -57,11 +58,12 @@ export async function Navbar() {
                 </nav>
 
                 {/* User Menu (Desktop) */}
-                <form action={handleLogin}>
-                {!session?.user && <Button type="submit">Login</Button>}
-
-                </form>
-                {session?.user && <div className="hidden md:flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-2">
+                    <ThemeToggle />
+                    <form action={handleLogin}>
+                        {!session?.user && <Button type="submit">Login</Button>}
+                    </form>
+                    {session?.user && <div className="flex items-center gap-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -107,10 +109,14 @@ export async function Navbar() {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                </div>}
+                    </div>}
+                </div>
 
                 {/* Mobile Menu Button */}
-                <MobileNavMenu />
+                <div className="flex md:hidden items-center gap-2">
+                    <ThemeToggle />
+                    <MobileNavMenu />
+                </div>
             </div>
         </header>
     )
