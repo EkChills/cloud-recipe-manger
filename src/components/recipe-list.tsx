@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { DeleteRecipeDialog } from "@/components/delete-recipe-dialog"
 import { Search, Plus, Clock, Users, Eye, Trash2, TrendingUp, Filter } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -38,6 +39,8 @@ export default function RecipeListPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [sortBy, setSortBy] = useState("newest")
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [recipeToDelete, setRecipeToDelete] = useState<{ id: string; title: string } | null>(null)
 
   const { data: recipes, isLoading } = useQuery({
     queryKey: ["recipes"],
@@ -61,18 +64,25 @@ export default function RecipeListPage() {
     return 0
   })
 
+  const handleDeleteClick = (id: string, title: string) => {
+    setRecipeToDelete({ id, title })
+    setDeleteDialogOpen(true)
+  }
+
   return (
     <div className="container py-8 mx-auto px-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold">My Recipes</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
+            My Recipes
+          </h1>
+          <p className="text-muted-foreground mt-2">
             {filteredRecipes?.length || 0} recipe{filteredRecipes?.length !== 1 ? "s" : ""} found
           </p>
         </div>
         <Link href="/recipes/new">
-          <Button size="lg" className="gap-2">
+          <Button size="lg" className="gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
             <Plus className="h-5 w-5" />
             Add New Recipe
           </Button>
@@ -134,16 +144,22 @@ export default function RecipeListPage() {
         </div>
       ) : sortedRecipes && sortedRecipes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedRecipes.map((recipe) => (
-            <Card key={recipe.id} className="overflow-hidden hover:shadow-lg transition-shadow group">
+          {sortedRecipes.map((recipe, index) => (
+            <Card
+              key={recipe.id}
+              className="overflow-hidden hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border-2 hover:border-orange-200 dark:hover:border-orange-900 group"
+              style={{
+                animation: `fadeInUp 0.5s ease-out calc(${index} * 0.1s) both`,
+              }}
+            >
               {/* Recipe Image */}
-              <div className="relative h-48 bg-gradient-to-br from-orange-100 to-pink-100 overflow-hidden">
+              <div className="relative h-48 bg-gradient-to-br from-orange-100 to-pink-100 dark:from-orange-950 dark:to-pink-950 overflow-hidden">
                 {recipe.image ? (
                   <Image
                     src={recipe.image}
                     alt={recipe.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-50">
@@ -151,14 +167,14 @@ export default function RecipeListPage() {
                   </div>
                 )}
                 <div className="absolute top-3 right-3">
-                  <Badge variant="secondary" className="bg-white/90 backdrop-blur">
+                  <Badge variant="secondary" className="bg-white/90 dark:bg-gray-800/90 backdrop-blur">
                     {recipe.category}
                   </Badge>
                 </div>
               </div>
 
               <CardHeader>
-                <CardTitle className="line-clamp-2">{recipe.title}</CardTitle>
+                <CardTitle className="line-clamp-2 group-hover:text-orange-600 transition-colors">{recipe.title}</CardTitle>
                 {recipe.description && (
                   <CardDescription className="line-clamp-2">{recipe.description}</CardDescription>
                 )}
@@ -169,20 +185,20 @@ export default function RecipeListPage() {
                 <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                   {recipe.prepTime && (
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{recipe.prepTime + (recipe.cookTime || 0)} min</span>
+                      <Clock className="h-4 w-4 text-orange-600" />
+                      <span className="font-medium text-orange-600">{recipe.prepTime + (recipe.cookTime || 0)}</span> min
                     </div>
                   )}
                   {recipe.servings && (
                     <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      <span>{recipe.servings} servings</span>
+                      <Users className="h-4 w-4 text-orange-600" />
+                      <span className="font-medium text-orange-600">{recipe.servings}</span> servings
                     </div>
                   )}
                   {recipe.totalCost && (
                     <div className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4" />
-                      <span>₦{recipe.totalCost.toFixed(2)}</span>
+                      <TrendingUp className="h-4 w-4 text-orange-600" />
+                      <span className="font-medium text-orange-600">₦{recipe.totalCost.toFixed(2)}</span>
                     </div>
                   )}
                 </div>
@@ -228,12 +244,17 @@ export default function RecipeListPage() {
 
               <CardFooter className="flex gap-2">
                 <Link href={`/recipes/${recipe.id}`} className="flex-1">
-                  <Button variant="default" className="w-full gap-2">
+                  <Button variant="default" className="w-full gap-2 hover:bg-orange-600 dark:hover:bg-orange-700">
                     <Eye className="h-4 w-4" />
                     View
                   </Button>
                 </Link>
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="hover:bg-red-50 dark:hover:bg-red-950 hover:border-red-300 dark:hover:border-red-800"
+                  onClick={() => handleDeleteClick(recipe.id, recipe.title)}
+                >
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
               </CardFooter>
@@ -241,24 +262,54 @@ export default function RecipeListPage() {
           ))}
         </div>
       ) : (
-        <Card className="p-12">
-          <div className="text-center space-y-4">
-            <div className="text-6xl">📝</div>
-            <h3 className="text-xl font-semibold">No recipes found</h3>
-            <p className="text-muted-foreground">
-              {searchQuery || selectedCategory !== "All"
-                ? "Try adjusting your filters"
-                : "Start by creating your first recipe"}
-            </p>
+        <Card className="p-12 border-2 border-dashed">
+          <div className="text-center space-y-6">
+            <div className="mx-auto h-24 w-24 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center">
+              <Plus className="h-12 w-12 text-white" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {searchQuery || selectedCategory !== "All" ? "No recipes found" : "No recipes yet"}
+              </h3>
+              <p className="text-muted-foreground">
+                {searchQuery || selectedCategory !== "All"
+                  ? "Try adjusting your search or filters to find what you're looking for"
+                  : "Start building your personal cookbook by creating your first recipe"}
+              </p>
+            </div>
             <Link href="/recipes/new">
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Create Recipe
+              <Button size="lg" className="gap-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
+                <Plus className="h-5 w-5" />
+                Create Your First Recipe
               </Button>
             </Link>
           </div>
         </Card>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      {recipeToDelete && (
+        <DeleteRecipeDialog
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+          recipeId={recipeToDelete.id}
+          recipeTitle={recipeToDelete.title}
+        />
+      )}
+
+      {/* Animation Styles */}
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }

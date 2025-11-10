@@ -11,6 +11,7 @@ import {
 import { BookOpen, ChefHat, LogOut, Settings, User, Plus, Compass } from "lucide-react"
 import Link from "next/link"
 import MobileNav from "./mobile-nav-menu"
+import { ThemeToggle } from "./theme-toggle"
 import { auth, signIn, signOut } from "@/auth"
 
 export async function Navbar() {
@@ -61,6 +62,7 @@ export async function Navbar() {
 
         {/* User Menu */}
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {!session?.user ? (
             <form action={handleLogin}>
               <Button type="submit" size="sm" className="gap-2">
