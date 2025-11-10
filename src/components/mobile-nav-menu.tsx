@@ -1,94 +1,121 @@
 "use client"
 
-import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Button } from "./ui/button";
-import { BookOpen, ChefHat, LogOut, Menu, X } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import Link from "next/link";
-import {signOut} from "next-auth/react"
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { Menu, BookOpen, Plus, Compass, User, LogOut, Settings } from "lucide-react"
+import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Separator } from "@/components/ui/separator"
 
+interface MobileNavProps {
+  user?: {
+    name?: string | null
+    email?: string | null
+    image?: string | null
+  }
+  onLogout?: () => void
+}
 
-export default function MobileNavMenu() {
+export default function MobileNav({ user, onLogout }: MobileNavProps) {
+  const [open, setOpen] = useState(false)
 
-    const handleLogout = async () => {
-        await signOut({redirectTo: "/"})
-    }
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    return (
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                    <Menu className="h-6 w-6" />
-                    <DialogTitle><span className="sr-only">Toggle menu</span></DialogTitle>
-                </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[80%] sm:w-[350px]">
-                <div className="flex flex-col h-full">
-                    <div className="flex items-center justify-between border-b py-4">
-                        <div className="flex items-center gap-2">
-                            <ChefHat className="h-6 w-6 text-primary" />
-                            <span className="font-bold">RecipeChef</span>
-                        </div>
-                        <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
-                            <X className="h-5 w-5" />
-                        </Button>
-                    </div>
+  const NavLink = ({ href, icon: Icon, children, onClick }: any) => (
+    <Link
+      href={href}
+      onClick={() => {
+        setOpen(false)
+        onClick?.()
+      }}
+      className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-accent transition-colors"
+    >
+      <Icon className="h-5 w-5" />
+      <span className="font-medium">{children}</span>
+    </Link>
+  )
 
-                    {/* Mobile User Profile */}
-                    <div className="flex items-center gap-4 border-b py-6">
-                        <Avatar className="h-10 w-10 border">
-                            <AvatarImage src="/placeholder.svg" alt="User" />
-                            <AvatarFallback className="bg-primary/10 text-primary">JD</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <p className="text-sm font-medium">John Doe</p>
-                            <p className="text-xs text-muted-foreground">john.doe@example.com</p>
-                        </div>
-                    </div>
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild className="md:hidden">
+        <Button variant="ghost" size="icon">
+          <Menu className="h-6 w-6" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-80">
+        <SheetHeader>
+          <SheetTitle>Menu</SheetTitle>
+        </SheetHeader>
 
-                    {/* Mobile Navigation */}
-                    <nav className="flex flex-col gap-1 py-4">
-                        <Link
-                            href="/recipes"
-                            className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent rounded-md"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            <BookOpen className="h-4 w-4" />
-                            My Recipes
-                        </Link>
-                        <Link
-                            href="/recipes/new"
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-accent rounded-md"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            <ChefHat className="h-4 w-4" />
-                            Create Recipe
-                        </Link>
-                        <Link
-                            href="/discover"
-                            className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-accent rounded-md"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            <BookOpen className="h-4 w-4" />
-                            Discover
-                        </Link>
-                    </nav>
-
-                    {/* Mobile Menu Footer */}
-                    <div className="mt-auto border-t py-4">
-                        <Button
-                            variant="ghost"
-                            className="flex w-full items-center justify-start gap-2 px-4 py-2 text-sm text-destructive hover:bg-destructive/10"
-                            onClick={handleLogout}
-                        >
-                            <LogOut className="h-4 w-4" />
-                            Log out
-                        </Button>
-                    </div>
+        <div className="flex flex-col h-full py-6">
+          {/* User Info */}
+          {user && (
+            <>
+              <div className="flex items-center gap-3 px-3 py-4 mb-4 bg-muted rounded-lg">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={user.image || ""} />
+                  <AvatarFallback className="bg-primary text-primary-foreground">
+                    {user.name?.substring(0, 2).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold truncate">{user.name}</p>
+                  <p className="text-sm text-muted-foreground truncate">{user.email}</p>
                 </div>
-            </SheetContent>
-        </Sheet>
-    )
+              </div>
+              <Separator className="mb-4" />
+            </>
+          )}
+
+          {/* Navigation Links */}
+          <nav className="flex-1 space-y-1">
+            <NavLink href="/recipes" icon={BookOpen}>
+              My Recipes
+            </NavLink>
+            <NavLink href="/recipes/new" icon={Plus}>
+              Create Recipe
+            </NavLink>
+            <NavLink href="/discover" icon={Compass}>
+              Discover
+            </NavLink>
+
+            {user && (
+              <>
+                <Separator className="my-4" />
+                <NavLink href="/profile" icon={User}>
+                  Profile
+                </NavLink>
+                <NavLink href="/settings" icon={Settings}>
+                  Settings
+                </NavLink>
+              </>
+            )}
+          </nav>
+
+          {/* Logout Button */}
+          {user && onLogout && (
+            <>
+              <Separator className="my-4" />
+              <Button
+                variant="ghost"
+                className="justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={() => {
+                  setOpen(false)
+                  onLogout()
+                }}
+              >
+                <LogOut className="h-5 w-5" />
+                Log out
+              </Button>
+            </>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
+  )
 }

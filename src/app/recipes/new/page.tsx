@@ -1,7 +1,6 @@
-import React from 'react'
-import NewRecipePage from './_new-recipe'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
+import EnhancedRecipeCreation from './_new-recipe'
 
 export default async function page() {
         const session = await auth()
@@ -10,6 +9,6 @@ export default async function page() {
             redirect("/login")
         }
   return (
-    <NewRecipePage />
+    <EnhancedRecipeCreation />
   )
 }

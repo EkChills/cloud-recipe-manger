@@ -1,5 +1,5 @@
 import { auth } from "@/auth"
-import { RecipeList } from "@/components/recipe-list"
+import RecipeListPage from "@/components/recipe-list"
 import { db } from "@/prisma"
 import { redirect } from "next/navigation"
 
@@ -18,5 +18,5 @@ export default async function RecipesPage() {
             ingredients: true
         }
     })
-  return <RecipeList recipes={recipes} />
+  return <RecipeListPage />
 }
