@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { DeleteRecipeDialog } from "@/components/delete-recipe-dialog"
-import { Check, Clock, Users, ChefHat, DollarSign, ArrowLeft, ArrowRight } from "lucide-react"
+import { Check, Clock, Users, ChefHat, DollarSign, ArrowLeft, ArrowRight, List } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -117,7 +117,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                   </p>
                 </div>
                 {sortedSteps[currentStep]?.duration && (
-                  <div className="flex items-center gap-2 mt-6 ml-22 text-orange-600 dark:text-orange-400 font-semibold">
+                  <div className="flex items-center gap-2 mt-6 ml-22 text-muted-foreground font-semibold">
                     <Clock className="h-5 w-5" />
                     {sortedSteps[currentStep].duration} minutes
                   </div>
@@ -281,7 +281,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                   </div>
                 )}
 
-                <h1 className="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mb-6 leading-tight">
+                <h1 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">
                   {recipe.title}
                 </h1>
 
@@ -294,46 +294,34 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
                   {totalTime > 0 && (
-                    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 p-5 shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative">
-                        <Clock className="h-8 w-8 text-white/80 mb-2" />
-                        <div className="text-3xl font-bold text-white mb-1">{totalTime}</div>
-                        <div className="text-sm text-white/80 font-medium">minutes</div>
-                      </div>
+                    <div className="p-5 rounded-xl border-2 hover:border-gray-400 dark:hover:border-gray-600 transition-all">
+                      <Clock className="h-8 w-8 text-muted-foreground mb-2" />
+                      <div className="text-3xl font-bold mb-1">{totalTime}</div>
+                      <div className="text-sm text-muted-foreground">minutes</div>
                     </div>
                   )}
 
                   {recipe.servings && (
-                    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 p-5 shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative">
-                        <Users className="h-8 w-8 text-white/80 mb-2" />
-                        <div className="text-3xl font-bold text-white mb-1">{recipe.servings}</div>
-                        <div className="text-sm text-white/80 font-medium">servings</div>
-                      </div>
+                    <div className="p-5 rounded-xl border-2 hover:border-gray-400 dark:hover:border-gray-600 transition-all">
+                      <Users className="h-8 w-8 text-muted-foreground mb-2" />
+                      <div className="text-3xl font-bold mb-1">{recipe.servings}</div>
+                      <div className="text-sm text-muted-foreground">servings</div>
                     </div>
                   )}
 
                   {recipe.totalCost ? (
-                    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 p-5 shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative">
-                        <DollarSign className="h-8 w-8 text-white/80 mb-2" />
-                        <div className="text-3xl font-bold text-white mb-1">₦{recipe.totalCost.toFixed(0)}</div>
-                        <div className="text-sm text-white/80 font-medium">total cost</div>
-                      </div>
+                    <div className="p-5 rounded-xl border-2 hover:border-gray-400 dark:hover:border-gray-600 transition-all">
+                      <DollarSign className="h-8 w-8 text-muted-foreground mb-2" />
+                      <div className="text-3xl font-bold mb-1">₦{recipe.totalCost.toFixed(0)}</div>
+                      <div className="text-sm text-muted-foreground">total cost</div>
                     </div>
                   ) : null}
 
                   {recipe.steps?.length > 0 && (
-                    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 p-5 shadow-lg hover:shadow-xl transition-all hover:scale-105">
-                      <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="relative">
-                        <ChefHat className="h-8 w-8 text-white/80 mb-2" />
-                        <div className="text-3xl font-bold text-white mb-1">{recipe.steps.length}</div>
-                        <div className="text-sm text-white/80 font-medium">steps</div>
-                      </div>
+                    <div className="p-5 rounded-xl border-2 hover:border-gray-400 dark:hover:border-gray-600 transition-all">
+                      <List className="h-8 w-8 text-muted-foreground mb-2" />
+                      <div className="text-3xl font-bold mb-1">{recipe.steps.length}</div>
+                      <div className="text-sm text-muted-foreground">steps</div>
                     </div>
                   )}
                 </div>
@@ -342,7 +330,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 {recipe.tags && recipe.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-8">
                     {recipe.tags.map((tag: any) => (
-                      <Badge key={tag.tag} variant="outline" className="text-sm px-3 py-1 border-2">
+                      <Badge key={tag.tag} variant="outline" className="text-sm px-3 py-1">
                         {tag.tag}
                       </Badge>
                     ))}
@@ -357,12 +345,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
             <div className="lg:col-span-2">
               <Card className="sticky top-4 border shadow-xl">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center shadow-lg">
-                      <ChefHat className="h-5 w-5 text-white" />
-                    </div>
-                    Ingredients
-                  </CardTitle>
+                  <CardTitle className="text-2xl">Ingredients</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
                   {recipe.ingredients && recipe.ingredients.length > 0 ? (
@@ -370,10 +353,10 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                       {recipe.ingredients.map((ingredient: any, index: number) => (
                         <div
                           key={ingredient.id}
-                          className="group flex items-start gap-3 p-4 rounded-xl border hover:border-orange-300 hover:bg-orange-50/50 dark:hover:bg-orange-950/20 transition-all"
+                          className="group flex items-start gap-3 p-4 rounded-lg border hover:bg-accent/50 transition-all"
                         >
-                          <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 mt-0.5 shadow-md">
-                            {index + 1}
+                          <div className="text-xs text-muted-foreground w-6 flex-shrink-0 mt-0.5">
+                            {index + 1}.
                           </div>
                           <div className="flex-1">
                             <p className="font-semibold text-base">
@@ -385,7 +368,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                               </p>
                             )}
                             {ingredient.calculatedPrice && (
-                              <p className="text-sm text-orange-600 dark:text-orange-400 font-medium mt-1">
+                              <p className="text-sm text-muted-foreground mt-1">
                                 ₦{ingredient.calculatedPrice.toFixed(2)}
                               </p>
                             )}
@@ -406,12 +389,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
             <div className="lg:col-span-3">
               <Card className="border shadow-xl">
                 <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center shadow-lg">
-                      <ChefHat className="h-5 w-5 text-white" />
-                    </div>
-                    Cooking directions
-                  </CardTitle>
+                  <CardTitle className="text-2xl">Directions</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6">
                   {recipe.steps && recipe.steps.length > 0 ? (
@@ -424,7 +402,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                             className={`group flex gap-4 p-5 rounded-xl border-2 transition-all ${
                               checkedSteps.has(step.id)
                                 ? "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-800"
-                                : "border-gray-200 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-700 hover:bg-orange-50/30 dark:hover:bg-orange-950/10"
+                                : "hover:bg-accent/50"
                             }`}
                           >
                             <button
@@ -436,7 +414,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                                   <Check className="h-6 w-6 text-white" />
                                 </div>
                               ) : (
-                                <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center font-bold text-white text-lg group-hover:scale-110 transition-transform shadow-lg">
+                                <div className="h-11 w-11 rounded-xl border-2 flex items-center justify-center font-bold text-lg transition-transform">
                                   {index + 1}
                                 </div>
                               )}
@@ -452,7 +430,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                                 {step.instruction}
                               </p>
                               {step.duration && (
-                                <div className="flex items-center gap-2 mt-3 text-sm text-orange-600 dark:text-orange-400 font-medium">
+                                <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
                                   <Clock className="h-4 w-4" />
                                   {step.duration} minutes
                                 </div>

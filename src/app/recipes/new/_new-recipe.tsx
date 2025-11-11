@@ -217,7 +217,7 @@ export default function EnhancedRecipeCreation() {
           <Link href="/recipes" className="text-sm font-medium text-muted-foreground hover:text-foreground mb-6 inline-flex items-center gap-2">
             ← Back to recipes
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mt-4">
+          <h1 className="text-4xl font-bold mt-4">
             Create new recipe
           </h1>
           <p className="text-muted-foreground mt-2">Follow the steps to create your perfect recipe</p>
@@ -393,7 +393,7 @@ export default function EnhancedRecipeCreation() {
                       onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
                       className="h-11"
                     />
-                    <Button onClick={addTag} className="h-11 px-6 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
+                    <Button onClick={addTag} variant="outline" className="h-11 px-6">
                       Add
                     </Button>
                   </div>
@@ -465,7 +465,7 @@ export default function EnhancedRecipeCreation() {
                     </Select>
                   </div>
                   <div className="col-span-2 sm:col-span-2">
-                    <Button onClick={addIngredient} className="w-full h-11 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
+                    <Button onClick={addIngredient} variant="outline" className="w-full h-11">
                       Add
                     </Button>
                   </div>
@@ -479,8 +479,8 @@ export default function EnhancedRecipeCreation() {
                         className="flex items-center justify-between p-4 rounded-lg border hover:bg-accent/50 transition-all"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-sm font-bold">
-                            {index + 1}
+                          <div className="text-xs text-muted-foreground w-6">
+                            {index + 1}.
                           </div>
                           <span className="font-semibold">{ingredient.name}</span>
                           <span className="text-muted-foreground">
@@ -525,7 +525,7 @@ export default function EnhancedRecipeCreation() {
                       onChange={(e) => setStepDuration(parseInt(e.target.value) || undefined)}
                       className="h-11"
                     />
-                    <Button onClick={addStep} className="h-11 px-6 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
+                    <Button onClick={addStep} variant="outline" className="h-11 px-6">
                       Add step
                     </Button>
                   </div>
@@ -538,13 +538,13 @@ export default function EnhancedRecipeCreation() {
                         key={step.id}
                         className="flex gap-4 p-5 rounded-lg border hover:bg-accent/50 transition-all"
                       >
-                        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                        <div className="h-10 w-10 rounded-lg border-2 flex items-center justify-center text-lg font-bold flex-shrink-0">
                           {index + 1}
                         </div>
                         <div className="flex-1">
                           <p className="font-medium leading-relaxed">{step.instruction}</p>
                           {step.duration && (
-                            <p className="text-sm text-orange-600 dark:text-orange-400 mt-2">
+                            <p className="text-sm text-muted-foreground mt-2">
                               {step.duration} minutes
                             </p>
                           )}
