@@ -210,14 +210,14 @@ export default function EnhancedRecipeCreation() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900">
+    <div className="min-h-screen bg-background">
       <div className="container max-w-5xl py-12 mx-auto px-6">
         {/* Header */}
         <div className="mb-12">
           <Link href="/recipes" className="text-sm font-medium text-muted-foreground hover:text-foreground mb-6 inline-flex items-center gap-2">
             ← Back to recipes
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mt-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600 bg-clip-text text-transparent mt-4">
             Create new recipe
           </h1>
           <p className="text-muted-foreground mt-2">Follow the steps to create your perfect recipe</p>
@@ -229,7 +229,7 @@ export default function EnhancedRecipeCreation() {
             {/* Progress Bar Background */}
             <div className="absolute top-[22px] left-0 right-0 h-1 bg-gray-200 dark:bg-gray-800" />
             <div
-              className="absolute top-[22px] left-0 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-500 ease-out"
+              className="absolute top-[22px] left-0 h-1 bg-gradient-to-r from-orange-600 to-amber-600 transition-all duration-500 ease-out"
               style={{ width: `${((currentStep - 1) / (STEPS_CONFIG.length - 1)) * 100}%` }}
             />
 
@@ -248,9 +248,9 @@ export default function EnhancedRecipeCreation() {
                     }}
                     className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                       isCompleted
-                        ? "bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg scale-100"
+                        ? "bg-gradient-to-br from-orange-600 to-amber-600 shadow-lg scale-100"
                         : isCurrent
-                        ? "bg-gradient-to-br from-blue-600 to-indigo-600 shadow-xl scale-110 ring-4 ring-blue-200 dark:ring-blue-900"
+                        ? "bg-gradient-to-br from-orange-600 to-amber-600 shadow-xl scale-110 ring-4 ring-orange-200 dark:ring-orange-900"
                         : "bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-700"
                     }`}
                   >
@@ -276,12 +276,12 @@ export default function EnhancedRecipeCreation() {
         <div className="space-y-6">
           {/* Step 1: Basic Details */}
           {currentStep === 1 && (
-            <Card className="border-2 border-blue-200/50 dark:border-blue-900/50 shadow-xl backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-b">
+            <Card className="border shadow-lg">
+              <CardHeader>
                 <CardTitle className="text-2xl">Basic details</CardTitle>
                 <CardDescription>Tell us about your recipe</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6 pt-6">
+              <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="title" className="text-sm font-medium">Title *</Label>
                   <Input
@@ -289,7 +289,7 @@ export default function EnhancedRecipeCreation() {
                     placeholder="e.g., Classic Chocolate Cake"
                     value={recipeData.title}
                     onChange={(e) => setRecipeData({ ...recipeData, title: e.target.value })}
-                    className="h-11 border-2"
+                    className="h-11"
                   />
                 </div>
 
@@ -301,7 +301,7 @@ export default function EnhancedRecipeCreation() {
                     rows={4}
                     value={recipeData.description}
                     onChange={(e) => setRecipeData({ ...recipeData, description: e.target.value })}
-                    className="resize-none border-2"
+                    className="resize-none"
                   />
                 </div>
 
@@ -312,7 +312,7 @@ export default function EnhancedRecipeCreation() {
                       value={recipeData.category}
                       onValueChange={(value) => setRecipeData({ ...recipeData, category: value })}
                     >
-                      <SelectTrigger className="h-11 border-2">
+                      <SelectTrigger className="h-11">
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -331,7 +331,7 @@ export default function EnhancedRecipeCreation() {
                       value={recipeData.difficulty}
                       onValueChange={(value) => setRecipeData({ ...recipeData, difficulty: value })}
                     >
-                      <SelectTrigger className="h-11 border-2">
+                      <SelectTrigger className="h-11">
                         <SelectValue placeholder="Select difficulty" />
                       </SelectTrigger>
                       <SelectContent>
@@ -354,7 +354,7 @@ export default function EnhancedRecipeCreation() {
                       placeholder="30"
                       value={recipeData.prepTime || ""}
                       onChange={(e) => setRecipeData({ ...recipeData, prepTime: parseInt(e.target.value) || undefined })}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
                   </div>
 
@@ -366,7 +366,7 @@ export default function EnhancedRecipeCreation() {
                       placeholder="45"
                       value={recipeData.cookTime || ""}
                       onChange={(e) => setRecipeData({ ...recipeData, cookTime: parseInt(e.target.value) || undefined })}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
                   </div>
 
@@ -378,7 +378,7 @@ export default function EnhancedRecipeCreation() {
                       placeholder="4"
                       value={recipeData.servings || ""}
                       onChange={(e) => setRecipeData({ ...recipeData, servings: parseInt(e.target.value) || undefined })}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
                   </div>
                 </div>
@@ -391,9 +391,9 @@ export default function EnhancedRecipeCreation() {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
-                    <Button onClick={addTag} className="h-11 px-6">
+                    <Button onClick={addTag} className="h-11 px-6 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
                       Add
                     </Button>
                   </div>
@@ -419,12 +419,12 @@ export default function EnhancedRecipeCreation() {
 
           {/* Step 2: Ingredients */}
           {currentStep === 2 && (
-            <Card className="border-2 border-blue-200/50 dark:border-blue-900/50 shadow-xl backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-b">
+            <Card className="border shadow-lg">
+              <CardHeader>
                 <CardTitle className="text-2xl">Ingredients ({recipeData.ingredients.length})</CardTitle>
                 <CardDescription>What do you need to make this recipe?</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6 pt-6">
+              <CardContent className="space-y-6">
                 <div className="grid grid-cols-12 gap-3">
                   <div className="col-span-12 sm:col-span-5">
                     <Input
@@ -434,7 +434,7 @@ export default function EnhancedRecipeCreation() {
                         setNewIngredient({ ...newIngredient, name: e.target.value })
                         setIngredientSearch(e.target.value)
                       }}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -444,7 +444,7 @@ export default function EnhancedRecipeCreation() {
                       placeholder="Quantity"
                       value={newIngredient.quantity || ""}
                       onChange={(e) => setNewIngredient({ ...newIngredient, quantity: parseFloat(e.target.value) })}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
                   </div>
                   <div className="col-span-4 sm:col-span-2">
@@ -452,7 +452,7 @@ export default function EnhancedRecipeCreation() {
                       value={newIngredient.unit}
                       onValueChange={(value) => setNewIngredient({ ...newIngredient, unit: value })}
                     >
-                      <SelectTrigger className="h-11 border-2">
+                      <SelectTrigger className="h-11">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -465,7 +465,7 @@ export default function EnhancedRecipeCreation() {
                     </Select>
                   </div>
                   <div className="col-span-2 sm:col-span-2">
-                    <Button onClick={addIngredient} className="w-full h-11">
+                    <Button onClick={addIngredient} className="w-full h-11 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
                       Add
                     </Button>
                   </div>
@@ -476,10 +476,10 @@ export default function EnhancedRecipeCreation() {
                     {recipeData.ingredients.map((ingredient, index) => (
                       <div
                         key={ingredient.id}
-                        className="flex items-center justify-between p-4 rounded-xl border-2 border-blue-100 dark:border-blue-900/50 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all"
+                        className="flex items-center justify-between p-4 rounded-lg border hover:bg-accent/50 transition-all"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-sm font-bold">
+                          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-sm font-bold">
                             {index + 1}
                           </div>
                           <span className="font-semibold">{ingredient.name}</span>
@@ -503,19 +503,19 @@ export default function EnhancedRecipeCreation() {
 
           {/* Step 3: Directions */}
           {currentStep === 3 && (
-            <Card className="border-2 border-blue-200/50 dark:border-blue-900/50 shadow-xl backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50 border-b">
+            <Card className="border shadow-lg">
+              <CardHeader>
                 <CardTitle className="text-2xl">Directions ({recipeData.steps.length})</CardTitle>
                 <CardDescription>Step-by-step cooking instructions</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6 pt-6">
+              <CardContent className="space-y-6">
                 <div className="space-y-3">
                   <Textarea
                     placeholder="e.g., Preheat the oven to 350°F..."
                     rows={4}
                     value={newStep}
                     onChange={(e) => setNewStep(e.target.value)}
-                    className="resize-none border-2"
+                    className="resize-none"
                   />
                   <div className="flex gap-3">
                     <Input
@@ -523,9 +523,9 @@ export default function EnhancedRecipeCreation() {
                       placeholder="Duration (min)"
                       value={stepDuration || ""}
                       onChange={(e) => setStepDuration(parseInt(e.target.value) || undefined)}
-                      className="h-11 border-2"
+                      className="h-11"
                     />
-                    <Button onClick={addStep} className="h-11 px-6">
+                    <Button onClick={addStep} className="h-11 px-6 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
                       Add step
                     </Button>
                   </div>
@@ -536,15 +536,15 @@ export default function EnhancedRecipeCreation() {
                     {recipeData.steps.map((step, index) => (
                       <div
                         key={step.id}
-                        className="flex gap-4 p-5 rounded-xl border-2 border-indigo-100 dark:border-indigo-900/50 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/20 transition-all"
+                        className="flex gap-4 p-5 rounded-lg border hover:bg-accent/50 transition-all"
                       >
-                        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                        <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
                           {index + 1}
                         </div>
                         <div className="flex-1">
                           <p className="font-medium leading-relaxed">{step.instruction}</p>
                           {step.duration && (
-                            <p className="text-sm text-indigo-600 dark:text-indigo-400 mt-2">
+                            <p className="text-sm text-orange-600 dark:text-orange-400 mt-2">
                               {step.duration} minutes
                             </p>
                           )}
@@ -569,21 +569,21 @@ export default function EnhancedRecipeCreation() {
               variant="outline"
               onClick={handleBack}
               disabled={currentStep === 1}
-              className="h-12 px-8 border-2"
+              className="h-12 px-8"
             >
               ← Back
             </Button>
 
             <div className="flex gap-3">
               <Link href="/recipes">
-                <Button variant="outline" className="h-12 px-8 border-2">
+                <Button variant="outline" className="h-12 px-8">
                   Cancel
                 </Button>
               </Link>
               {currentStep < 3 ? (
                 <Button
                   onClick={handleNext}
-                  className="h-12 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg"
+                  className="h-12 px-8 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
                 >
                   Continue →
                 </Button>
@@ -591,7 +591,7 @@ export default function EnhancedRecipeCreation() {
                 <Button
                   onClick={handleSubmit}
                   disabled={!canSubmit || isPending}
-                  className="h-12 px-8 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg"
+                  className="h-12 px-8 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
                 >
                   {isPending ? "Creating..." : "Create recipe"}
                 </Button>
