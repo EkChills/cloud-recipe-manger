@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { BookOpen, ChefHat, LogOut, Settings, User, Plus, Compass } from "lucide-react"
 import Link from "next/link"
 import MobileNav from "./mobile-nav-menu"
 import { ThemeToggle } from "./theme-toggle"
@@ -28,46 +27,33 @@ export async function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between mx-auto px-4">
-        {/* Logo and Brand */}
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center">
-            <ChefHat className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <span className="text-xl font-bold hidden sm:inline">RecipeChef</span>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/80">
+      <div className="container flex h-14 items-center justify-between mx-auto px-6">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+          <span className="text-lg font-semibold tracking-tight">RecipeChef</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
-          <Link href="/recipes">
-            <Button variant="ghost" className="gap-2">
-              <BookOpen className="h-4 w-4" />
-              My Recipes
-            </Button>
+        <nav className="hidden md:flex items-center gap-8">
+          <Link href="/recipes" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Recipes
           </Link>
-          <Link href="/recipes/new">
-            <Button variant="ghost" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Create Recipe
-            </Button>
+          <Link href="/recipes/new" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Create
           </Link>
-          <Link href="/discover">
-            <Button variant="ghost" className="gap-2">
-              <Compass className="h-4 w-4" />
-              Discover
-            </Button>
+          <Link href="/discover" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Discover
           </Link>
         </nav>
 
         {/* User Menu */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <ThemeToggle />
           {!session?.user ? (
             <form action={handleLogin}>
-              <Button type="submit" size="sm" className="gap-2">
-                <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Login</span>
+              <Button type="submit" size="sm" className="h-9 px-4 text-sm">
+                Sign in
               </Button>
             </form>
           ) : (
@@ -76,10 +62,10 @@ export async function Navbar() {
               <div className="hidden md:block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                      <Avatar className="h-10 w-10 border-2 border-primary/20">
+                    <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0">
+                      <Avatar className="h-9 w-9">
                         <AvatarImage src={session.user.image || ""} alt={session.user.name || ""} />
-                        <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                        <AvatarFallback className="text-xs font-semibold">
                           {session.user.name?.substring(0, 2).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -96,20 +82,17 @@ export async function Navbar() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/profile" className="cursor-pointer">
-                        <User className="mr-2 h-4 w-4" />
+                      <Link href="/profile" className="cursor-pointer text-sm">
                         Profile
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/recipes" className="cursor-pointer">
-                        <BookOpen className="mr-2 h-4 w-4" />
+                      <Link href="/recipes" className="cursor-pointer text-sm">
                         My Recipes
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/settings" className="cursor-pointer">
-                        <Settings className="mr-2 h-4 w-4" />
+                      <Link href="/settings" className="cursor-pointer text-sm">
                         Settings
                       </Link>
                     </DropdownMenuItem>
@@ -118,10 +101,9 @@ export async function Navbar() {
                       <form action={handleLogout} className="w-full">
                         <button
                           type="submit"
-                          className="w-full flex items-center text-destructive focus:text-destructive"
+                          className="w-full text-left text-sm text-destructive focus:text-destructive"
                         >
-                          <LogOut className="mr-2 h-4 w-4" />
-                          Log out
+                          Sign out
                         </button>
                       </form>
                     </DropdownMenuItem>

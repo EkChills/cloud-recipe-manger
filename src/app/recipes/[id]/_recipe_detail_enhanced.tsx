@@ -6,21 +6,8 @@ import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { DeleteRecipeDialog } from "@/components/delete-recipe-dialog"
-import {
-  Clock,
-  Users,
-  TrendingUp,
-  ChefHat,
-  Edit,
-  Trash2,
-  Printer,
-  ArrowLeft,
-  CheckCircle2,
-  Circle,
-  ArrowRight,
-} from "lucide-react"
+import { Check } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -60,7 +47,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
 
   if (isLoading) {
     return (
-      <div className="container max-w-5xl py-8 mx-auto px-4">
+      <div className="container max-w-6xl py-8 mx-auto px-6">
         <div className="animate-pulse space-y-8">
           <div className="h-8 bg-muted rounded w-1/3" />
           <div className="h-64 bg-muted rounded" />
@@ -75,10 +62,10 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
 
   if (!recipe) {
     return (
-      <div className="container max-w-5xl py-16 mx-auto px-4 text-center">
-        <h2 className="text-2xl font-bold">Recipe not found</h2>
+      <div className="container max-w-6xl py-16 mx-auto px-6 text-center">
+        <h2 className="text-2xl font-semibold">Recipe not found</h2>
         <Link href="/recipes">
-          <Button className="mt-4">Back to Recipes</Button>
+          <Button className="mt-4 h-9 px-4 text-sm">Back to recipes</Button>
         </Link>
       </div>
     )
@@ -91,74 +78,68 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
     const sortedSteps = recipe.steps.sort((a: any, b: any) => a.stepNumber - b.stepNumber)
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-900 dark:to-gray-800 p-4 print:hidden">
+      <div className="min-h-screen bg-background p-6 print:hidden">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <Button
               variant="outline"
               onClick={() => setCookingMode(false)}
-              className="bg-white dark:bg-gray-800"
+              className="h-9 px-4 text-sm"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Exit Cooking Mode
+              ← Exit cooking mode
             </Button>
-            <div className="text-sm text-muted-foreground bg-white dark:bg-gray-800 px-4 py-2 rounded-lg font-semibold">
+            <div className="text-sm text-muted-foreground font-medium">
               Step {currentStep + 1} of {sortedSteps.length}
             </div>
           </div>
 
-          <Card className="border-2 border-orange-200 dark:border-orange-900 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/50 dark:to-amber-950/50">
+          <Card className="border-2 shadow-sm">
+            <CardHeader>
               <CardTitle className="text-2xl">{recipe.title}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-8 pt-8">
+            <CardContent className="space-y-8 pt-6">
               {/* Current Step */}
-              <div className="bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-950 dark:to-amber-950 rounded-xl p-8">
+              <div className="border-2 rounded-lg p-6">
                 <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-orange-600 to-amber-600 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  <div className="flex-shrink-0 w-14 h-14 border-2 rounded-full flex items-center justify-center text-foreground text-xl font-semibold">
                     {currentStep + 1}
                   </div>
-                  <p className="text-xl leading-relaxed flex-1 pt-3">
+                  <p className="text-lg leading-relaxed flex-1 pt-2">
                     {sortedSteps[currentStep]?.instruction}
                   </p>
                 </div>
                 {sortedSteps[currentStep]?.duration && (
-                  <div className="flex items-center gap-2 mt-6 text-orange-600 font-semibold ml-22">
-                    <Clock className="h-5 w-5" />
+                  <div className="text-sm text-muted-foreground mt-4 ml-20">
                     {sortedSteps[currentStep].duration} minutes
                   </div>
                 )}
               </div>
 
               {/* Navigation */}
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <Button
                   variant="outline"
-                  size="lg"
                   onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
                   disabled={currentStep === 0}
-                  className="flex-1 h-14"
+                  className="flex-1 h-10"
                 >
-                  <ArrowLeft className="mr-2 h-5 w-5" />
-                  Previous
+                  ← Previous
                 </Button>
                 <Button
-                  size="lg"
                   onClick={() =>
                     setCurrentStep(Math.min(sortedSteps.length - 1, currentStep + 1))
                   }
                   disabled={currentStep === sortedSteps.length - 1}
-                  className="flex-1 h-14 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700"
+                  className="flex-1 h-10"
                 >
-                  Next Step
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  Next step →
                 </Button>
               </div>
 
               {/* Quick Reference */}
-              <Card className="bg-muted/50">
+              <Card className="border">
                 <CardHeader>
-                  <CardTitle className="text-base">Ingredients Quick Reference</CardTitle>
+                  <CardTitle className="text-base">Ingredients reference</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
@@ -193,188 +174,142 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
-        <div className="container max-w-6xl py-8 mx-auto px-4">
+      <div className="min-h-screen bg-background">
+        <div className="container max-w-6xl py-8 mx-auto px-6">
           {/* Back Button & Actions */}
           <div className="flex items-center justify-between mb-8 no-print">
-            <Link href="/recipes">
-              <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Recipes
-              </Button>
+            <Link href="/recipes" className="text-sm text-muted-foreground hover:text-foreground">
+              ← Back to recipes
             </Link>
 
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handlePrint}>
-                <Printer className="h-4 w-4 mr-2" />
+              <Button variant="outline" size="sm" className="h-9 px-3 text-sm" onClick={handlePrint}>
                 Print
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950 dark:to-amber-950 border-orange-200 dark:border-orange-900"
+                className="h-9 px-3 text-sm"
                 onClick={() => setCookingMode(true)}
               >
-                <ChefHat className="h-4 w-4 mr-2" />
-                Cooking Mode
+                Cooking mode
               </Button>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" className="h-9 px-3 text-sm" asChild>
                 <Link href={`/recipes/${recipe.id}/edit`}>
-                  <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Link>
               </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="text-destructive hover:bg-red-50 dark:hover:bg-red-950"
+                className="text-destructive hover:bg-red-50 dark:hover:bg-red-950 h-9 px-3 text-sm"
                 onClick={() => setDeleteDialogOpen(true)}
               >
-                <Trash2 className="h-4 w-4" />
+                Delete
               </Button>
             </div>
           </div>
 
           {/* Recipe Header */}
-          <Card className="border-2 border-orange-200 dark:border-orange-900 shadow-lg mb-8">
-            <CardContent className="pt-8">
-              <div className="flex flex-col gap-6">
-                {/* Title & Badges */}
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 mb-4">
-                    {recipe.category && (
-                      <Badge variant="secondary" className="text-base px-4 py-1">
-                        {recipe.category}
-                      </Badge>
-                    )}
-                    {recipe.difficulty && (
-                      <Badge
-                        variant={
-                          recipe.difficulty === "Easy"
-                            ? "default"
-                            : recipe.difficulty === "Medium"
-                            ? "secondary"
-                            : "destructive"
-                        }
-                        className="text-base px-4 py-1"
-                      >
-                        {recipe.difficulty}
-                      </Badge>
-                    )}
-                  </div>
-                  <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-4">
-                    {recipe.title}
-                  </h1>
-                  {recipe.description && (
-                    <p className="text-lg text-muted-foreground leading-relaxed">
-                      {recipe.description}
-                    </p>
-                  )}
-                </div>
+          <div className="mb-8">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {recipe.category && (
+                <Badge variant="secondary" className="text-sm">
+                  {recipe.category}
+                </Badge>
+              )}
+              {recipe.difficulty && (
+                <Badge
+                  variant={
+                    recipe.difficulty === "Easy"
+                      ? "default"
+                      : recipe.difficulty === "Medium"
+                      ? "secondary"
+                      : "destructive"
+                  }
+                  className="text-sm"
+                >
+                  {recipe.difficulty}
+                </Badge>
+              )}
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight mb-4">
+              {recipe.title}
+            </h1>
+            {recipe.description && (
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                {recipe.description}
+              </p>
+            )}
+          </div>
 
-                {/* Recipe Image */}
-                {recipe.image && (
-                  <div className="relative h-64 sm:h-96 rounded-xl overflow-hidden">
-                    <Image src={recipe.image} alt={recipe.title} fill className="object-cover" />
-                  </div>
-                )}
+          {/* Recipe Image */}
+          {recipe.image && (
+            <div className="relative h-64 sm:h-96 rounded-lg overflow-hidden mb-8 border">
+              <Image src={recipe.image} alt={recipe.title} fill className="object-cover" />
+            </div>
+          )}
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {totalTime > 0 && (
-                    <div className="p-4 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 rounded-lg border border-orange-200 dark:border-orange-900">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center">
-                          <Clock className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-orange-600">{totalTime}</p>
-                          <p className="text-xs text-muted-foreground">minutes</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {recipe.servings && (
-                    <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-lg border border-blue-200 dark:border-blue-900">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center">
-                          <Users className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-blue-600">{recipe.servings}</p>
-                          <p className="text-xs text-muted-foreground">servings</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {recipe.totalCost && (
-                    <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-lg border border-green-200 dark:border-green-900">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center">
-                          <TrendingUp className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-2xl font-bold text-green-600">₦{recipe.totalCost.toFixed(0)}</p>
-                          <p className="text-xs text-muted-foreground">total cost</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 rounded-lg border border-purple-200 dark:border-purple-900">
-                    <div className="flex items-center gap-3">
-                      <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-                        <ChefHat className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-purple-600">{recipe.steps?.length || 0}</p>
-                        <p className="text-xs text-muted-foreground">steps</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                {recipe.tags && recipe.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {recipe.tags.map((tag: any) => (
-                      <Badge key={tag.tag} variant="outline" className="text-sm">
-                        {tag.tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            {totalTime > 0 && (
+              <div className="p-4 border rounded-lg">
+                <div className="text-2xl font-semibold mb-1">{totalTime} min</div>
+                <div className="text-sm text-muted-foreground">Total time</div>
               </div>
-            </CardContent>
-          </Card>
+            )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            {recipe.servings && (
+              <div className="p-4 border rounded-lg">
+                <div className="text-2xl font-semibold mb-1">{recipe.servings}</div>
+                <div className="text-sm text-muted-foreground">Servings</div>
+              </div>
+            )}
+
+            {recipe.totalCost && (
+              <div className="p-4 border rounded-lg">
+                <div className="text-2xl font-semibold mb-1">₦{recipe.totalCost.toFixed(0)}</div>
+                <div className="text-sm text-muted-foreground">Total cost</div>
+              </div>
+            )}
+
+            <div className="p-4 border rounded-lg">
+              <div className="text-2xl font-semibold mb-1">{recipe.steps?.length || 0}</div>
+              <div className="text-sm text-muted-foreground">Steps</div>
+            </div>
+          </div>
+
+          {/* Tags */}
+          {recipe.tags && recipe.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {recipe.tags.map((tag: any) => (
+                <Badge key={tag.tag} variant="outline" className="text-sm">
+                  {tag.tag}
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
             {/* Ingredients */}
             <div className="lg:col-span-2">
-              <Card className="sticky top-4 border-2 border-orange-200 dark:border-orange-900 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/50 dark:to-amber-950/50">
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <div className="h-8 w-8 bg-gradient-to-br from-orange-600 to-amber-600 rounded-lg flex items-center justify-center">
-                      <Users className="h-4 w-4 text-white" />
-                    </div>
-                    Ingredients
-                  </CardTitle>
+              <Card className="sticky top-4 border">
+                <CardHeader>
+                  <CardTitle className="text-xl">Ingredients</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-6">
+                <CardContent>
                   {recipe.ingredients && recipe.ingredients.length > 0 ? (
                     <div className="space-y-3">
                       {recipe.ingredients.map((ingredient: any, index: number) => (
                         <div
                           key={ingredient.id}
-                          className="flex items-start gap-3 p-3 rounded-lg border-2 border-orange-100 dark:border-orange-900 hover:bg-orange-50/50 dark:hover:bg-orange-950/20 transition-colors"
+                          className="flex items-start gap-3 p-3 rounded-md border text-sm"
                         >
-                          <div className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">
-                            {index + 1}
+                          <div className="text-xs text-muted-foreground w-6 flex-shrink-0 mt-0.5">
+                            {index + 1}.
                           </div>
                           <div className="flex-1">
-                            <p className="font-semibold">
+                            <p className="font-medium">
                               {ingredient.quantity} {ingredient.unit} {ingredient.ingredientName}
                             </p>
                             {ingredient.notes && (
@@ -383,7 +318,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                               </p>
                             )}
                             {ingredient.calculatedPrice && (
-                              <p className="text-xs text-orange-600 font-medium mt-1">
+                              <p className="text-xs text-muted-foreground mt-1">
                                 ₦{ingredient.calculatedPrice.toFixed(2)}
                               </p>
                             )}
@@ -392,7 +327,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-muted-foreground text-center py-8">
+                    <p className="text-muted-foreground text-center py-8 text-sm">
                       No ingredients added yet
                     </p>
                   )}
@@ -402,46 +337,41 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
 
             {/* Directions */}
             <div className="lg:col-span-3">
-              <Card className="border-2 border-orange-200 dark:border-orange-900 shadow-lg">
-                <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/50 dark:to-amber-950/50">
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
-                      <ChefHat className="h-4 w-4 text-white" />
-                    </div>
-                    Cooking Directions
-                  </CardTitle>
+              <Card className="border">
+                <CardHeader>
+                  <CardTitle className="text-xl">Directions</CardTitle>
                 </CardHeader>
-                <CardContent className="pt-6">
+                <CardContent>
                   {recipe.steps && recipe.steps.length > 0 ? (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {recipe.steps
                         .sort((a: any, b: any) => a.stepNumber - b.stepNumber)
                         .map((step: any, index: number) => (
                           <div
                             key={step.id}
-                            className={`flex gap-4 p-5 rounded-lg border-2 transition-all ${
+                            className={`flex gap-3 p-4 rounded-md border transition-colors ${
                               checkedSteps.has(step.id)
-                                ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900"
-                                : "border-orange-100 dark:border-orange-900 hover:border-orange-300 dark:hover:border-orange-700"
-                            } group`}
+                                ? "bg-muted/50 border-muted-foreground/20"
+                                : "hover:bg-accent/50"
+                            }`}
                           >
                             <button
                               onClick={() => toggleStep(step.id)}
                               className="flex-shrink-0"
                             >
                               {checkedSteps.has(step.id) ? (
-                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center shadow-lg">
-                                  <CheckCircle2 className="h-6 w-6 text-white" />
+                                <div className="h-8 w-8 rounded-full border-2 border-foreground flex items-center justify-center">
+                                  <Check className="h-4 w-4" />
                                 </div>
                               ) : (
-                                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-orange-600 to-amber-600 flex items-center justify-center font-bold text-white text-lg group-hover:scale-110 transition-transform">
+                                <div className="h-8 w-8 rounded-full border-2 flex items-center justify-center font-semibold text-sm">
                                   {index + 1}
                                 </div>
                               )}
                             </button>
-                            <div className="flex-1">
+                            <div className="flex-1 pt-1">
                               <p
-                                className={`text-base leading-relaxed ${
+                                className={`text-sm leading-relaxed ${
                                   checkedSteps.has(step.id)
                                     ? "line-through text-muted-foreground"
                                     : ""
@@ -450,8 +380,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                                 {step.instruction}
                               </p>
                               {step.duration && (
-                                <div className="flex items-center gap-1 mt-2 text-sm text-orange-600 font-medium">
-                                  <Clock className="h-3 w-3" />
+                                <div className="text-xs text-muted-foreground mt-2">
                                   {step.duration} minutes
                                 </div>
                               )}
@@ -460,7 +389,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                         ))}
                     </div>
                   ) : (
-                    <p className="text-muted-foreground text-center py-8">
+                    <p className="text-muted-foreground text-center py-8 text-sm">
                       No directions added yet
                     </p>
                   )}
@@ -470,16 +399,16 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
           </div>
 
           {/* Recipe Info Footer */}
-          <Card className="mt-8 bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 border-2 border-orange-200 dark:border-orange-900">
+          <Card className="mt-8 border">
             <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Created by</p>
-                  <p className="font-semibold text-lg">{recipe.author?.name || "Unknown"}</p>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground mb-1">Created by</p>
+                  <p className="font-medium">{recipe.author?.name || "Unknown"}</p>
                 </div>
-                <div className="space-y-1 text-left sm:text-right">
-                  <p className="text-sm text-muted-foreground">Created on</p>
-                  <p className="font-semibold text-lg">
+                <div className="text-left sm:text-right">
+                  <p className="text-muted-foreground mb-1">Created on</p>
+                  <p className="font-medium">
                     {new Date(recipe.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
