@@ -26,7 +26,7 @@ interface MobileNavProps {
 export default function MobileNav({ user, onLogout }: MobileNavProps) {
   const [open, setOpen] = useState(false)
 
-  const NavLink = ({ href, icon: Icon, children, onClick }: any) => (
+  const NavLink = ({ href, icon: Icon, children, onClick }: { href: string; icon: React.ComponentType<{ className?: string }>; children: React.ReactNode; onClick?: () => void }) => (
     <Link
       href={href}
       onClick={() => {

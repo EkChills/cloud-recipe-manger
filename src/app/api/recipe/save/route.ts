@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     // Calculate total cost from ingredients
     const totalCost = data.ingredients.reduce(
-      (sum: number, ing: any) => sum + (ing.calculatedPrice || 0),
+      (sum: number, ing: { calculatedPrice?: number }) => sum + (ing.calculatedPrice || 0),
       0
     )
 
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         totalCost: totalCost,
         authorId: session.user.id,
         ingredients: {
-          create: data.ingredients.map((ing: any) => ({
+          create: data.ingredients.map((ing: { name: string; quantity: number; unit: string; notes?: string; calculatedPrice?: number; masterId?: string }) => ({
             ingredientName: ing.name,
             quantity: ing.quantity,
             unit: ing.unit,
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
           })),
         },
         steps: {
-          create: data.steps.map((step: any, index: number) => ({
+          create: data.steps.map((step: { instruction: string; duration?: number }, index: number) => ({
             stepNumber: index + 1,
             instruction: step.instruction,
             duration: step.duration,

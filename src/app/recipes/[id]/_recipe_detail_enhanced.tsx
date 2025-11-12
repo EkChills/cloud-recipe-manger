@@ -82,7 +82,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
 
   // Cooking Mode UI
   if (cookingMode && recipe.steps?.length > 0) {
-    const sortedSteps = recipe.steps.sort((a: any, b: any) => a.stepNumber - b.stepNumber)
+    const sortedSteps = recipe.steps.sort((a: { stepNumber: number }, b: { stepNumber: number }) => a.stepNumber - b.stepNumber)
 
     return (
       <div className="min-h-screen bg-background p-6 print:hidden">
@@ -156,7 +156,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    {recipe.ingredients?.map((ingredient: any, index: number) => (
+                    {recipe.ingredients?.map((ingredient: { ingredientName: string; quantity: number; unit: string }, index: number) => (
                       <div key={index} className="flex justify-between p-2 rounded-lg border">
                         <span className="font-medium">{ingredient.ingredientName}</span>
                         <span className="text-muted-foreground">
@@ -329,7 +329,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 {/* Tags */}
                 {recipe.tags && recipe.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-8">
-                    {recipe.tags.map((tag: any) => (
+                    {recipe.tags.map((tag: { tag: string }) => (
                       <Badge key={tag.tag} variant="outline" className="text-sm px-3 py-1">
                         {tag.tag}
                       </Badge>
@@ -350,7 +350,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 <CardContent className="pt-6">
                   {recipe.ingredients && recipe.ingredients.length > 0 ? (
                     <div className="space-y-3">
-                      {recipe.ingredients.map((ingredient: any, index: number) => (
+                      {recipe.ingredients.map((ingredient: { id: string; quantity: number; unit: string; ingredientName: string; notes?: string; calculatedPrice?: number }, index: number) => (
                         <div
                           key={ingredient.id}
                           className="group flex items-start gap-3 p-4 rounded-lg border hover:bg-accent/50 transition-all"
@@ -395,8 +395,8 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                   {recipe.steps && recipe.steps.length > 0 ? (
                     <div className="space-y-4">
                       {recipe.steps
-                        .sort((a: any, b: any) => a.stepNumber - b.stepNumber)
-                        .map((step: any, index: number) => (
+                        .sort((a: { stepNumber: number }, b: { stepNumber: number }) => a.stepNumber - b.stepNumber)
+                        .map((step: { id: string; instruction: string; duration?: number }, index: number) => (
                           <div
                             key={step.id}
                             className={`group flex gap-4 p-5 rounded-xl border-2 transition-all ${

@@ -26,7 +26,7 @@ export default async function Home() {
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed">
-              Organize your favorite recipes, discover new dishes, and become the chef you've always wanted to be.
+              Organize your favorite recipes, discover new dishes, and become the chef you&apos;ve always wanted to be.
               All your culinary inspiration in one beautiful place.
             </p>
 

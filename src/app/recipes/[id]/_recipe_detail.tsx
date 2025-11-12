@@ -210,7 +210,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
         {/* Tags */}
         {recipe.tags && recipe.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {recipe.tags.map((tag: any) => (
+            {recipe.tags.map((tag: { tag: string }) => (
               <Badge key={tag.tag} variant="outline">
                 {tag.tag}
               </Badge>
@@ -239,7 +239,7 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
               <CardContent>
                 {recipe.ingredients && recipe.ingredients.length > 0 ? (
                   <div className="space-y-3">
-                    {recipe.ingredients.map((ingredient: any) => (
+                    {recipe.ingredients.map((ingredient: { id: string; quantity: number; unit: string; ingredientName: string; notes?: string; calculatedPrice?: number }) => (
                       <div
                         key={ingredient.id}
                         className="flex items-start gap-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors"
@@ -281,8 +281,8 @@ export default function RecipeDetail({ recipeId }: RecipeDetailProps) {
                 {recipe.steps && recipe.steps.length > 0 ? (
                   <div className="space-y-4">
                     {recipe.steps
-                      .sort((a: any, b: any) => a.stepNumber - b.stepNumber)
-                      .map((step: any, index: number) => (
+                      .sort((a: { stepNumber: number }, b: { stepNumber: number }) => a.stepNumber - b.stepNumber)
+                      .map((step: { id: string; instruction: string; duration?: number }, index: number) => (
                         <div
                           key={step.id}
                           className={`flex gap-4 p-4 rounded-lg border transition-all ${

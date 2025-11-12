@@ -77,7 +77,7 @@ export default function EnhancedRecipeCreation() {
   const [stepDuration, setStepDuration] = useState<number>()
   const [tagInput, setTagInput] = useState("")
 
-  const { data: ingredientSuggestions } = useQuery({
+  useQuery({
     queryKey: ["ingredients", ingredientSearch],
     queryFn: async () => {
       if (ingredientSearch.length < 2) return []
@@ -233,7 +233,7 @@ export default function EnhancedRecipeCreation() {
               style={{ width: `${((currentStep - 1) / (STEPS_CONFIG.length - 1)) * 100}%` }}
             />
 
-            {STEPS_CONFIG.map((step, index) => {
+            {STEPS_CONFIG.map((step) => {
               const isCompleted = currentStep > step.id
               const isCurrent = currentStep === step.id
               const StepIcon = step.icon
@@ -473,14 +473,14 @@ export default function EnhancedRecipeCreation() {
 
                 {recipeData.ingredients.length > 0 && (
                   <div className="space-y-3">
-                    {recipeData.ingredients.map((ingredient, index) => (
+                    {recipeData.ingredients.map((ingredient) => (
                       <div
                         key={ingredient.id}
                         className="flex items-center justify-between p-4 rounded-lg border hover:bg-accent/50 transition-all"
                       >
                         <div className="flex items-center gap-3">
                           <div className="text-xs text-muted-foreground w-6">
-                            {index + 1}.
+                            {recipeData.ingredients.indexOf(ingredient) + 1}.
                           </div>
                           <span className="font-semibold">{ingredient.name}</span>
                           <span className="text-muted-foreground">
@@ -533,13 +533,13 @@ export default function EnhancedRecipeCreation() {
 
                 {recipeData.steps.length > 0 && (
                   <div className="space-y-3">
-                    {recipeData.steps.map((step, index) => (
+                    {recipeData.steps.map((step) => (
                       <div
                         key={step.id}
                         className="flex gap-4 p-5 rounded-lg border hover:bg-accent/50 transition-all"
                       >
                         <div className="h-10 w-10 rounded-lg border-2 flex items-center justify-center text-lg font-bold flex-shrink-0">
-                          {index + 1}
+                          {recipeData.steps.indexOf(step) + 1}
                         </div>
                         <div className="flex-1">
                           <p className="font-medium leading-relaxed">{step.instruction}</p>

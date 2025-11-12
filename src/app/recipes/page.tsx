@@ -9,7 +9,7 @@ export default async function RecipesPage() {
     if (!session?.user) {
         redirect("/login")
     }
-    const recipes = await db.recipe.findMany({
+    await db.recipe.findMany({
         where: {
             authorId: session.user.id
         },

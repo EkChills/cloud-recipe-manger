@@ -52,7 +52,7 @@ export async function Navbar() {
           <ThemeToggle />
           {!session?.user ? (
             <form action={handleLogin}>
-              <Button type="submit" size="sm" className="h-9 px-4 text-sm">
+              <Button type="submit" size="sm" className="h-9 px-4 text-sm bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
                 Sign in
               </Button>
             </form>

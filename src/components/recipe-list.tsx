@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { DeleteRecipeDialog } from "@/components/delete-recipe-dialog"
 import { Search } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
@@ -38,8 +36,6 @@ export default function RecipeListPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [sortBy, setSortBy] = useState("newest")
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [recipeToDelete, setRecipeToDelete] = useState<{ id: string; title: string } | null>(null)
 
   const { data: recipes, isLoading } = useQuery({
     queryKey: ["recipes"],
@@ -63,11 +59,6 @@ export default function RecipeListPage() {
     return 0
   })
 
-  const handleDeleteClick = (id: string, title: string) => {
-    setRecipeToDelete({ id, title })
-    setDeleteDialogOpen(true)
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container max-w-7xl py-8 mx-auto px-6">
@@ -81,7 +72,7 @@ export default function RecipeListPage() {
               </p>
             </div>
             <Link href="/recipes/new">
-              <Button className="h-9 px-4 text-sm">
+              <Button className="h-9 px-4 text-sm  bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700">
                 New recipe
               </Button>
             </Link>
@@ -221,16 +212,6 @@ export default function RecipeListPage() {
           </Card>
         )}
       </div>
-
-      {/* Delete Dialog */}
-      {recipeToDelete && (
-        <DeleteRecipeDialog
-          open={deleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          recipeId={recipeToDelete.id}
-          recipeTitle={recipeToDelete.title}
-        />
-      )}
     </div>
   )
 }
