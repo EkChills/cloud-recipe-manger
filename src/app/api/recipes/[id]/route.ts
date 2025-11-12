@@ -4,18 +4,20 @@ import { db } from "@/prisma"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     const recipe = await db.recipe.findUnique({
       where: {
-        id: params.id,
+        id,
         authorId: session.user.id,
       },
       include: {
@@ -60,18 +62,20 @@ export async function GET(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth()
-    
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const { id } = await params
+
     await db.recipe.delete({
       where: {
-        id: params.id,
+        id,
         authorId: session.user.id,
       },
     })
